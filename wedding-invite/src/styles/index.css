@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────── Base ───────────── */
+@layer base {
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-ivory font-sans text-plum-900 antialiased;
+    /* Subtle stationery grain */
+    background-image:
+      radial-gradient(rgba(155, 114, 174, 0.06) 1px, transparent 1px),
+      radial-gradient(rgba(155, 114, 174, 0.04) 1px, transparent 1px);
+    background-size: 22px 22px, 13px 13px;
+    background-position: 0 0, 7px 9px;
+  }
+  h1, h2, h3 { @apply font-serif; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-lilac-deep; }
+  ::selection { @apply bg-lavender-200; }
+}
+
+/* ───────────── Reusable pieces ───────────── */
+@layer components {
+  .section { @apply relative overflow-hidden px-4 py-20 sm:px-6 sm:py-28; }
+  .container-narrow { @apply mx-auto w-full max-w-3xl; }
+  .container-wide { @apply mx-auto w-full max-w-6xl; }
+
+  .eyebrow { @apply font-sans text-[0.7rem] uppercase tracking-[0.32em] text-lilac-deep; }
+  .title { @apply font-serif text-4xl font-medium leading-tight text-plum-800 sm:text-5xl; }
+  .script { @apply font-script font-normal; }
+  .body-text { @apply font-serif text-lg leading-relaxed text-plum-800/85; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-xs uppercase tracking-[0.22em]
+           transition duration-300 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary { @apply btn bg-plum-700 text-ivory shadow-card hover:bg-plum-800; }
+  .btn-outline { @apply btn border border-plum-700/40 text-plum-700 hover:border-plum-700 hover:bg-plum-700 hover:text-ivory; }
+  .btn-light { @apply btn border border-ivory/50 text-ivory hover:bg-ivory hover:text-plum-800; }
+
+  .card {
+    @apply rounded-[1.75rem] border border-lavender-200 bg-white/70 shadow-card backdrop-blur-sm;
+  }
+
+  /* Ornate frame like printed stationery: double hairline + inner glow */
+  .frame {
+    @apply relative rounded-[2rem] bg-ivory/90 p-8 shadow-card sm:p-12;
+    outline: 1px solid rgba(155, 114, 174, 0.35);
+    outline-offset: -10px;
+  }
+  .frame::after {
+    content: '';
+    @apply pointer-events-none absolute inset-[16px] rounded-[1.5rem];
+    border: 1px solid rgba(205, 179, 134, 0.35);
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-lavender-300 bg-white/80 px-4 py-3 font-sans text-sm text-plum-900
+           placeholder:text-plum-500/50 transition focus:border-lilac-deep focus:outline-none focus:ring-2 focus:ring-lavender-200;
+  }
+  .label { @apply mb-1.5 block font-sans text-[0.7rem] uppercase tracking-[0.2em] text-plum-500; }
+
+  /* Deep plum feature band (countdown, RSVP) — mirrors the reference video */
+  .band-plum { @apply bg-plum-700 text-ivory; background-image: radial-gradient(ellipse at top, #7A4A84 0%, #5A2E63 55%, #45224D 100%); }
+  .band-lavender { background-image: linear-gradient(180deg, #F8F4FC 0%, #F0E8F8 50%, #F8F4FC 100%); }
+}
+
+/* ───────────── Animations ───────────── */
+@layer utilities {
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .animate-shimmer {
+    background: linear-gradient(110deg, #F0E8F8 30%, #FBF8F2 50%, #F0E8F8 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+  .text-balance { text-wrap: balance; }
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+
+/* Respect reduced-motion: kill decorative animation, keep content. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
